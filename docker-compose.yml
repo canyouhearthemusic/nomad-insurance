@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  nginx-backend:
+    build:
+      context: ./docker-files/nginx/backend
+      dockerfile: Dockerfile
+    
+    ports:
+      - 9090:80
+
+    volumes:
+      - ./backend:/var/www/html
+
+    depends_on:
+      - mysql
+
+    networks:
+      - app
+
+  nginx-frontend:
+    build: 
+      context: ./docker-files/nginx/frontend
+      dockerfile: Dockerfile
+
+    ports:
+      - 3000:80
+
+    volumes:
+      - ./frontend:/var/www/html
+
+    networks:
+      - app
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./backend:/var/www/html
+
+    networks:
+      - app
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./frontend:/var/www/html
+
+    working_dir: /var/www/html
+    
+    entrypoint: ['npm']
+
+    networks:
+      - app
+
+  composer:
+    build:
+      context: ./docker-files/composer
+      dockerfile: Dockerfile
+    
+    volumes:
+      - ./backend:/var/www/html
+
+    working_dir: /var/www/html
+
+    depends_on:
+      - backend
+
+  artisan:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+
+    volumes:
+      - ./backend:/var/www/html
+
+    working_dir: /var/www/html
+
+    entrypoint: ["php", "/var/www/html/artisan"]
+    
+  mysql:
+    image: mysql:8.3.0
+
+    ports:
+      - 3307:3306
+
+    environment:
+      MYSQL_DATABASE: nomad-insurance
+      MYSQL_USER: app
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+
+networks:
+  app:
+    driver: bridge
