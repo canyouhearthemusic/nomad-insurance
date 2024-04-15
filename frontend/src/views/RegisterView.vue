@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, useRouter } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import GuestLayout from '@/layouts/GuestLayout.vue';
 import { reactive } from 'vue';
 import { useAuthStore } from '@/store/auth.js';

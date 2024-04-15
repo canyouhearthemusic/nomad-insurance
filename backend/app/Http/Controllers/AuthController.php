@@ -25,6 +25,11 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request)
     {
         if (Auth::attempt($request->validated())) {
+            
+            $request->session()->regenerate();
+
+            $request->user()->tokens()->delete();
+            
             return response()->json([
                 'user' => $request->user(),
                 'token' => $request->user()->createToken("user_id_{$request->user()->id}_auth_token")->plainTextToken,
@@ -38,7 +43,13 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        $request->user()->tokens()->delete();
 
         return response()->json([
             'message' => 'Logged Out'
