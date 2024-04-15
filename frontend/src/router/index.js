@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import HelloWorld from "@/components/HelloWorld.vue";
 import LoginView from "@/views/LoginView.vue"
 import RegisterView from "@/views/RegisterView.vue"
+import IndexView from "@/views/contacts/IndexView.vue"
+import CreateView from "@/views/contacts/CreateView.vue"
+import EditView from "@/views/contacts/EditView.vue"
 import { useAuthStore } from "@/store/auth";
 
 const router = createRouter({
@@ -10,11 +12,28 @@ const router = createRouter({
     routes: [
         {
             path: "/",
-            name: "home",
+            name: "contacts.index",
             meta: {
                 requiresAuth: true
             },
-            component: HelloWorld,
+            component: IndexView
+        },
+        {
+            path: "/contacts/create",
+            name: "contacts.create",
+            meta: {
+                requiresAuth: true
+            },
+            component: CreateView
+        },
+        {
+            path: "/contacts/:id/edit",
+            name: "contacts.edit",
+            meta: {
+                requiresAuth: true
+            },
+            props: true,
+            component: EditView
         },
         {
             path: "/login",

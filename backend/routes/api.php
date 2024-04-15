@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,11 +18,7 @@ use Illuminate\Support\Facades\Route;
 require 'auth.php';
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/hello', function () {
-        return response()->json([
-            'message' => 'Hi!'
-        ]);
-    });
+    Route::resource('/contacts', ContactController::class)->except(['create', 'edit']);
 
     Route::get('/me', function (Request $request) {
         return $request->user();

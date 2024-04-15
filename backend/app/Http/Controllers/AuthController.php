@@ -25,8 +25,6 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request)
     {
         if (Auth::attempt($request->validated())) {
-            
-            $request->session()->regenerate();
 
             $request->user()->tokens()->delete();
             
