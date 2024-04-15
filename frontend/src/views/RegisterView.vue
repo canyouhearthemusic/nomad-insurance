@@ -75,6 +75,12 @@ const form = reactive({
                         Register
                     </button>
                 </div>
+
+                <div v-if="authStore.errors" class="text-red-500 space-y-2">
+                    <p v-for="error in authStore.errors">
+                        {{ error[0] }}
+                    </p>
+                </div>
             </form>
 
             <p class="mt-10 text-center text-sm text-gray-500">
