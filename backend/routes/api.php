@@ -16,3 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 require 'auth.php';
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/hello', function () {
+        return response()->json([
+            'message' => 'Hi!'
+        ]);
+    });
+
+    Route::get('/me', function (Request $request) {
+        return $request->user();
+    });
+});
