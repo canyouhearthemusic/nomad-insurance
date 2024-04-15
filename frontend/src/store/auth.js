@@ -2,10 +2,12 @@ import { defineStore } from "pinia";
 import axios from "@/axios.js";
 
 export const useAuthStore = defineStore("auth", {
+    persist: true,
+
     state: () => ({
-        authUser: {},
-        authToken: '',
-        authErrors: {},
+        authUser: null,
+        authToken: null,
+        authErrors: null,
     }),
 
     getters: {
@@ -17,11 +19,6 @@ export const useAuthStore = defineStore("auth", {
     actions: {
         async getCsrfToken() {
             return await axios.get("/sanctum/csrf-cookie")
-        },
-
-        async getUser() {
-            let res = await axios.get("/api/user")
-            this.authUser = res.data
         },
 
         async login(form) {
@@ -80,10 +77,10 @@ export const useAuthStore = defineStore("auth", {
             let response = await axios.post("/api/logout")
 
             if (response.status = 200) {
-                this.authUser = {}
-                this.authToken = ''
+                this.authUser = null
+                this.authToken = null
 
-                this.router.push('/')
+                this.router.push('/login')
             }
         },
     },

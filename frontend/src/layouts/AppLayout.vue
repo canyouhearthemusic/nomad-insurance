@@ -32,7 +32,7 @@ const authStore = useAuthStore()
                     <Menu as="div" class="relative ml-3">
                         <div>
                             <MenuButton class="relative flex rounded-full bg-white text-sm">
-                                <span> Your Name </span>
+                                <span> {{ authStore.user?.name }} </span>
                             </MenuButton>
                         </div>
                         <transition enter-active-class="transition ease-out duration-200"
