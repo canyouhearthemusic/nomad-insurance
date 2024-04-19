@@ -10,17 +10,13 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
 |
 */
 
-require 'auth.php';
+require "auth.php";
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('/contacts', ContactController::class)->except(['create', 'edit']);
-
-    Route::get('/me', function (Request $request) {
-        return $request->user();
-    });
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('/contacts', ContactController::class);
 });
